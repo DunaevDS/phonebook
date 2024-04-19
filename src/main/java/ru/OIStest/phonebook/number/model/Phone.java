@@ -25,7 +25,7 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String name;
+    private String name; // фио
     @Column(nullable = false)
     private String number;
     @ManyToOne(fetch = FetchType.LAZY)
