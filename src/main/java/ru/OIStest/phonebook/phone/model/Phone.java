@@ -1,4 +1,4 @@
-package ru.OIStest.phonebook.number.model;
+package ru.OIStest.phonebook.phone.model;
 
 import ru.OIStest.phonebook.user.model.User;
 import jakarta.persistence.Column;

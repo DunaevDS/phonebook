@@ -1,4 +1,4 @@
-package ru.OIStest.phonebook.number.dto;
+package ru.OIStest.phonebook.phone.dto;
 
 public class PhoneToDto {
     private Long id;

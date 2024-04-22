@@ -2,7 +2,7 @@ package ru.OIStest.phonebook.user.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import ru.OIStest.phonebook.user.dto.UserFromDto;
+import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.model.User;
 
@@ -12,5 +12,5 @@ public interface UserMapper {
 
     UserToDto userToUserDTO(User user);
 
-    User userDTOToUser(UserFromDto userDTO);
+    User userDtoToUser(UserDto userDTO);
 }

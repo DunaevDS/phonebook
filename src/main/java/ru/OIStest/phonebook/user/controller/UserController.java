@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.OIStest.phonebook.user.dto.UserFromDto;
+import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.service.UserService;
 
@@ -36,8 +36,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserToDto addUser(@Valid @RequestBody UserFromDto user) {
-        log.info("Получен запрос POST /OIStest/users на добавление нового пользователя " + user.toString());
+    public UserToDto addUser(@Valid @RequestBody UserDto user) {
+        log.info("Получен запрос POST /OIStest/users на добавление нового пользователя {}", user.toString());
         return userService.addUser(user);
     }
 
@@ -59,7 +59,7 @@ public class UserController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserToDto addUser(@Valid @RequestBody UserFromDto user) {
+    public UserToDto updateUser(@Valid @RequestBody UserDto user) {
         log.info("Получен запрос PUT /OIStest/users на добавление нового пользователя " + user.toString());
         return userService.updateUser(user);
     }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import ru.OIStest.phonebook.number.model.Phone;
+import ru.OIStest.phonebook.phone.model.Phone;
 
 @Data
 @Builder

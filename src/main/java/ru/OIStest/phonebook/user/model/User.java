@@ -1,7 +1,7 @@
 package ru.OIStest.phonebook.user.model;
 
 import jakarta.persistence.CascadeType;
-import ru.OIStest.phonebook.number.model.Phone;
+import ru.OIStest.phonebook.phone.model.Phone;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
