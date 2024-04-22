@@ -6,6 +6,8 @@ import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.model.User;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -13,4 +15,6 @@ public interface UserMapper {
     UserToDto userToUserDTO(User user);
 
     User userDtoToUser(UserDto userDTO);
+
+    List<UserToDto> userListToUserDTO(List<User> users);
 }

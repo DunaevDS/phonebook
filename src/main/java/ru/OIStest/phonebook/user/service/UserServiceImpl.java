@@ -1,12 +1,13 @@
 package ru.OIStest.phonebook.user.service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.OIStest.phonebook.exception.DataValidationException;
 import ru.OIStest.phonebook.phone.model.Phone;
-import ru.OIStest.phonebook.phone.reposiory.PhoneRepository;
 import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.mapper.UserMapper;
@@ -22,7 +23,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PhoneRepository phoneRepository;
 
     @Override
     @Transactional
@@ -35,11 +35,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findUsers(List<Long> ids, Integer from, Integer size) {
-        return List.of();
+    public List<UserToDto> findUsers(List<Long> ids, Integer from, Integer size) {
+        List<User> users;
+        Pageable pageRequest = PageRequest.of(from / size, size);
+        if (ids == null || ids.isEmpty()) {
+            users = userRepository.findAll(pageRequest).getContent();
+        } else {
+            users = userRepository.findByIdIn(ids, pageRequest);
+        }
+        log.info("Выполняется запрос на поиск пользователей. Выбранные id: {}", ids);
+        return UserMapper.INSTANCE.userListToUserDTO(users);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new DataValidationException("Пользователя с заданным id не существует");
@@ -50,6 +59,7 @@ public class UserServiceImpl implements UserService {
 
     // апдейт пользователя
     @Override
+    @Transactional
     public UserToDto updateUser(UserDto userDto) {
         User user = UserMapper.INSTANCE.userDtoToUser(userDto);
         log.info("Обновление данных пользователя {}", user);
