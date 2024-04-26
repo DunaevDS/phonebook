@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,6 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/OIStest/users")
 public class UserController {
+    private static final String USER_ID = "X-Sharer-User-Id";
 
     private final UserService userService;
 
@@ -44,7 +46,7 @@ public class UserController {
     @DeleteMapping(value = "/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@NotNull @PathVariable Long userId) {
-        log.info(String.format("Получен запрос DELETE /admin/users/{userId} = %s на удаление пользователя", userId));
+        log.info(String.format("Получен запрос DELETE /OIStest/users/{userId} = %s на удаление пользователя", userId));
         userService.deleteUser(userId);
     }
 
@@ -59,8 +61,9 @@ public class UserController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserToDto updateUser(@Valid @RequestBody UserDto user) {
-        log.info("Получен запрос PUT /OIStest/users на добавление нового пользователя " + user.toString());
-        return userService.updateUser(user);
+    public UserToDto updateUser(@RequestHeader(USER_ID) Long userId,
+                                @Valid @RequestBody UserDto user) {
+        log.info("Получен запрос PUT /OIStest/users на обновление данных пользователя {}", user.toString());
+        return userService.updateUser(userId,user);
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.OIStest.phonebook.exception.DataValidationException;
-import ru.OIStest.phonebook.phone.model.Phone;
+import ru.OIStest.phonebook.exception.UserNotFoundException;
+import ru.OIStest.phonebook.exception.NotFoundException;
 import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.mapper.UserMapper;
@@ -24,9 +24,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    //добавление пользователя
     @Override
     @Transactional
     public UserToDto addUser(UserDto userDto) {
+        if (userDto == null) {
+            log.error("EmptyObjectException: User is null.");
+            throw new NotFoundException("Пользователь не предоставлен");
+        }
         User user = UserMapper.INSTANCE.userDtoToUser(userDto);
         log.info("Добавление нового пользователя");
         userRepository.save(user);
@@ -34,9 +39,12 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.userToUserDTO(user);
     }
 
+    //поиск пользователей по айдишникам
     @Override
     public List<UserToDto> findUsers(List<Long> ids, Integer from, Integer size) {
         List<User> users;
+
+        //Пагинация
         Pageable pageRequest = PageRequest.of(from / size, size);
         if (ids == null || ids.isEmpty()) {
             users = userRepository.findAll(pageRequest).getContent();
@@ -47,20 +55,22 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.userListToUserDTO(users);
     }
 
+    //удаление пользователя
     @Override
     @Transactional
     public void deleteUser(Long userId) {
+        // проверяем существует ли пользователь с таким id
         if (!userRepository.existsById(userId)) {
-            throw new DataValidationException("Пользователя с заданным id не существует");
+            throw new UserNotFoundException("Пользователя с заданным id не существует");
         }
         userRepository.deleteById(userId);
         log.info("Пользователь с id {} удалён", userId);
     }
 
-    // апдейт пользователя
+/*    // апдейт пользователя версия 1
     @Override
     @Transactional
-    public UserToDto updateUser(UserDto userDto) {
+    public UserToDto updateUser(Integer userId, UserDto userDto) {
         User user = UserMapper.INSTANCE.userDtoToUser(userDto);
         log.info("Обновление данных пользователя {}", user);
         boolean numberExists = false;
@@ -82,5 +92,17 @@ public class UserServiceImpl implements UserService {
             log.info("сохранили в базе данные пользователя {}", user);
         }
         return UserMapper.INSTANCE.userToUserDTO(user);
+    }*/
+// апдейт пользователя версия 2
+@Override
+@Transactional
+public UserToDto updateUser(Long userId, UserDto userDto) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
+            "NotFoundException: Пользователь с id= " + userId + " не найден."));
+    if (userDto == null) {
+        log.error("EmptyObjectException: User is null.");
+        throw new NotFoundException("Пользователь не предоставлен");
     }
+    return UserMapper.INSTANCE.userToUserDTO(user);
+}
 }
