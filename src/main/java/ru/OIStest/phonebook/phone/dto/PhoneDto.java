@@ -10,8 +10,10 @@ import java.io.Serializable;
 
 @Value
 public class PhoneDto implements Serializable {
+/*
     @NotNull(message = "телефону должно соответстовать имя пользователя")
     String name;
+*/
 
     @NotNull(message = "номер телефона не может быть пустым")
     @Size(min = 6, max = 15)

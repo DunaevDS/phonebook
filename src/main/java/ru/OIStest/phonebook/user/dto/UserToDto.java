@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import ru.OIStest.phonebook.phone.model.Phone;
 
 @Data
 @Builder
@@ -15,5 +13,4 @@ import ru.OIStest.phonebook.phone.model.Phone;
 public class UserToDto {
     private Long id;
     private String name;
-    private List<Phone> phones;
 }

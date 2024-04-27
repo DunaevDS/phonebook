@@ -27,7 +27,7 @@ public class PhoneController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PhoneToDto addPhone(@Valid @RequestBody PhoneDto phone) {
-        log.info("Получен запрос POST /OIStest/phones на добавление нового телефона {}", phone.toString());
+        log.info("Получен запрос POST /OIStest/phones на добавление нового телефона {} для пользователя", phone.toString());
         return phoneService.addPhone(phone);
     }
 }

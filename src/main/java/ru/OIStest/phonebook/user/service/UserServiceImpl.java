@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.OIStest.phonebook.exception.UserNotFoundException;
 import ru.OIStest.phonebook.exception.NotFoundException;
+import ru.OIStest.phonebook.phone.reposiory.PhoneRepository;
 import ru.OIStest.phonebook.user.dto.UserDto;
+import ru.OIStest.phonebook.phone.dto.PhoneDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.mapper.UserMapper;
 import ru.OIStest.phonebook.user.model.User;
@@ -23,6 +25,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PhoneRepository phoneRepository;
 
     //добавление пользователя
     @Override
@@ -35,7 +38,7 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.INSTANCE.userDtoToUser(userDto);
         log.info("Добавление нового пользователя");
         userRepository.save(user);
-        log.info("сохранили в базу пользователя{}", user);
+        log.info("сохранили в базу пользователя {}", user);
         return UserMapper.INSTANCE.userToUserDTO(user);
     }
 
@@ -67,42 +70,33 @@ public class UserServiceImpl implements UserService {
         log.info("Пользователь с id {} удалён", userId);
     }
 
-/*    // апдейт пользователя версия 1
-    @Override
-    @Transactional
-    public UserToDto updateUser(Integer userId, UserDto userDto) {
-        User user = UserMapper.INSTANCE.userDtoToUser(userDto);
-        log.info("Обновление данных пользователя {}", user);
-        boolean numberExists = false;
-
-        // Перебираем номера, проверяем по бд
-        for (Phone phone : user.getPhones()) {
-            if (userRepository.existsByPhones_Number(phone.getNumber())) {
-                numberExists = true;
-                break;
-            }
-        }
-        // номер нашли по базе -> обновляем существующего пользователя
-        if (numberExists) {
-            user = userRepository.save(user);
-            log.info("обновили в базе данные пользователя {}", user);
-        } else {
-            // Номер не нашли -> сохраняем в бд
-            userRepository.save(user);
-            log.info("сохранили в базе данные пользователя {}", user);
-        }
-        return UserMapper.INSTANCE.userToUserDTO(user);
-    }*/
-// апдейт пользователя версия 2
+// апдейт пользователя
 @Override
 @Transactional
 public UserToDto updateUser(Long userId, UserDto userDto) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-            "NotFoundException: Пользователь с id= " + userId + " не найден."));
     if (userDto == null) {
         log.error("EmptyObjectException: User is null.");
         throw new NotFoundException("Пользователь не предоставлен");
     }
+
+    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
+            "NotFoundException: Пользователь с id= " + userId + " не найден."));
+
+    if (userDto.getName() != null) {
+        user.setName(userDto.getName());
+    }
+
+    userRepository.save(user);
+
     return UserMapper.INSTANCE.userToUserDTO(user);
 }
+    @Override
+    @Transactional
+    public UserToDto updateUser(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
+                "NotFoundException: Пользователь с id= " + userId + " не найден."));
+
+        return UserMapper.INSTANCE.userToUserDTO(userRepository.save(user));
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,18 +53,18 @@ public class UserController {
 
     @GetMapping
     public List<UserToDto> findUsers(@RequestParam(required = false) List<Long> ids,
-                                      @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
-                                      @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
+                                     @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
+                                     @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
         log.info(String.format("Получен запрос GET /OIStest/users на получение списка пользователей с id = %s, " +
                 "начиная с %s, по %s на странице", ids, from, size));
         return userService.findUsers(ids, from, size);
     }
 
-    @PutMapping
+    @PatchMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserToDto updateUser(@RequestHeader(USER_ID) Long userId,
                                 @Valid @RequestBody UserDto user) {
-        log.info("Получен запрос PUT /OIStest/users на обновление данных пользователя {}", user.toString());
-        return userService.updateUser(userId,user);
+        log.info("Получен запрос PATCH /OIStest/users на обновление данных пользователя {}", user.toString());
+        return userService.updateUser(userId, user);
     }
 }

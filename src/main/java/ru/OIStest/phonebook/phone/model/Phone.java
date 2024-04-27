@@ -26,13 +26,10 @@ public class Phone {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // фио
-
-    @Column(nullable = false)
     private String number;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String notes; //заметки для номера телефона.
