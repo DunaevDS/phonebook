@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.OIStest.phonebook.exception.DataDuplicateException;
 import ru.OIStest.phonebook.exception.NotFoundException;
 import ru.OIStest.phonebook.phone.dto.PhoneDto;
 import ru.OIStest.phonebook.phone.dto.PhoneToDto;
@@ -30,10 +31,18 @@ public class PhoneServiceImpl implements PhoneService {
             throw new NotFoundException("Телефон не предоставлен");
         }
         Phone phone = PhoneMapper.INSTANCE.toEntity(phoneDto);
+        phone.setNumber(phone.getNumber().replaceAll("\\D+", ""));
         log.info("Добавление нового телефона");
 
-        phoneRepository.save(phone);
-
+        try {
+            phoneRepository.save(phone);
+        } catch (Exception e) {
+            if (e.getMessage().contains("повторяющееся значение ключа")) {
+                throw new DataDuplicateException("такой номер телефона уже имеется в бд");
+            } else {
+                throw e;
+            }
+        }
         log.info("сохранили в базу телефон {}", phone);
         return PhoneMapper.INSTANCE.toDto(phone);
     }
