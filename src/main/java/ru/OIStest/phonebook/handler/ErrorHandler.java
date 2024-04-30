@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.OIStest.phonebook.exception.DataDuplicateException;
 import ru.OIStest.phonebook.exception.DataValidationException;
 import ru.OIStest.phonebook.exception.NotFoundException;
+import ru.OIStest.phonebook.exception.PhoneNotFoundException;
 import ru.OIStest.phonebook.exception.UserNotFoundException;
 
 @Slf4j
@@ -39,4 +40,9 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlePhoneNotFoundException(final PhoneNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
+    }
 }

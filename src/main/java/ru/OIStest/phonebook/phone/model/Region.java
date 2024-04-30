@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum Countries {
-    RUS("RUS"),
-    USA("USA"),
-    FRA("FRA"),
-    GER("GER");
+public enum Region {
+    TMN("072"),
+    MSK("077"),
+    TOM("70"),
+    SPB("078");
     private final String value;
 }

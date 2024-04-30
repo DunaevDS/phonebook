@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class PhoneToDto {
     private Long id;
     private String number;
+    private String notes;
 }

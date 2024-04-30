@@ -17,10 +17,10 @@ import java.util.List;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserToDto userToUserDTO(User user);
+    UserToDto toDto(User user);
 
-    User userDtoToUser(UserDto userDTO);
+    User toEntity(UserDto userDTO);
 
-    List<UserToDto> userListToUserDTO(List<User> users);
+    List<UserToDto> userListToDTO(List<User> users);
 
 }

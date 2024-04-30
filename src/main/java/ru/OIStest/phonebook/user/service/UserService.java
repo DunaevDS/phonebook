@@ -14,5 +14,5 @@ public interface UserService {
 
     UserToDto updateUser(Long userId, UserDto userDto);
 
-    UserToDto updateUser(Long userId);
+    List<UserToDto> getUsersBySearchQuery(String text, Integer from, Integer size);
 }

@@ -9,6 +9,8 @@ import ru.OIStest.phonebook.phone.dto.PhoneDto;
 import ru.OIStest.phonebook.phone.dto.PhoneToDto;
 import ru.OIStest.phonebook.phone.model.Phone;
 
+import java.util.List;
+
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
@@ -20,4 +22,5 @@ public interface PhoneMapper {
 
     PhoneToDto toDto(Phone phone);
 
+    List<PhoneToDto> phoneListToDto(List<Phone> phones);
 }
