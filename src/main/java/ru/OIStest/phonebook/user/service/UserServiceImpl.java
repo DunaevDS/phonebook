@@ -3,15 +3,13 @@ package ru.OIStest.phonebook.user.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.OIStest.phonebook.exception.UserNotFoundException;
 import ru.OIStest.phonebook.exception.NotFoundException;
-import ru.OIStest.phonebook.phone.dto.PhoneToDto;
-import ru.OIStest.phonebook.phone.mapper.PhoneMapper;
-import ru.OIStest.phonebook.phone.model.Phone;
 import ru.OIStest.phonebook.phone.reposiory.PhoneRepository;
 import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
@@ -53,8 +51,8 @@ public class UserServiceImpl implements UserService {
     public List<UserToDto> findUsers(List<Long> ids, Integer from, Integer size) {
         List<User> users;
 
-        //Пагинация
-        Pageable pageRequest = PageRequest.of(from / size, size);
+        //Пагинация c сортировкой по id на выходе
+        Pageable pageRequest = PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"));
         if (ids == null || ids.isEmpty()) {
             users = userRepository.findAll(pageRequest).getContent();
         } else {
@@ -103,14 +101,17 @@ public class UserServiceImpl implements UserService {
         List<UserToDto> listUserDto = new ArrayList<>();
 
         if ((text != null) && (!text.isEmpty()) && (!text.isBlank())) {
+            //текст поисковой строки приводим к нижнему регистру
             text = text.toLowerCase();
 
             Pageable pageable = PageRequest.of(from, size);
 
+            //ищем в БД
             Page<User> page = userRepository.getUsersBySearchQuery(text, pageable);
 
             listUserDto = UserMapper.INSTANCE.userListToDTO(page.getContent());
 
+            //обрезаем результат для постраничного отображения
             listUserDto = listUserDto.stream().limit(size).collect(toList());
         }
         return listUserDto;

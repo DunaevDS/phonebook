@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,7 +34,6 @@ import java.util.List;
 public class PhoneController {
 
     private final PhoneService phoneService;
-    private static final String PHONE_ID = "X-Sharer-Phone-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,8 +51,8 @@ public class PhoneController {
 
     @GetMapping
     public List<PhoneToDto> findPhones(@RequestParam(required = false) List<Long> ids,
-                                     @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
-                                     @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
+                                       @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
+                                       @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
         log.info(String.format("Получен запрос GET /OIStest/phones на получение списка телефонов с id = %s, " +
                 "начиная с %s, по %s на странице", ids, from, size));
         return phoneService.findPhones(ids, from, size);
@@ -62,27 +60,27 @@ public class PhoneController {
 
     @GetMapping(value = "/{userId}")
     public List<PhoneToDto> findPhonesByUserIds(@RequestParam(required = false) List<Long> userIds,
-                                               @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
-                                               @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
-        log.info(String.format("Получен запрос GET /OIStest/phones на получение списка пользователей с id = %s, " +
+                                                @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
+                                                @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
+        log.info(String.format("Получен запрос GET /OIStest/phones/{userId на получение списка пользователей с id = %s, " +
                 "начиная с %s, по %s на странице", userIds, from, size));
         return phoneService.findPhonesByUserIds(userIds, from, size);
     }
 
     @GetMapping("/search")
     public List<PhoneToDto> getPhonesBySearchQuery(@RequestParam String text,
-                                               @RequestParam(defaultValue = "0") Integer from,
-                                               @RequestParam(defaultValue = "10") Integer size) {
+                                                   @RequestParam(defaultValue = "0") Integer from,
+                                                   @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получен запрос GET /OIStest/phones/search' на поиск телефонов среди номеров и заметок по тексту = {}", text);
 
         return phoneService.getPhonesBySearchQuery(text, from, size);
     }
 
-    @PatchMapping
+    @PatchMapping(value = "/{phoneId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public PhoneToDto updatePhone(@RequestHeader(PHONE_ID) Long phoneId,
-                                @Valid @RequestBody PhoneDto phone) {
-        log.info("Получен запрос PATCH /OIStest/users на обновление данных пользователя {}", phone.toString());
+    public PhoneToDto updatePhone(@NotNull @PathVariable Long phoneId,
+                                  @Valid @RequestBody PhoneDto phone) {
+        log.info("Получен запрос PATCH /OIStest/phones/{phoneId на обновление данных телефона {}", phone.toString());
         return phoneService.updatePhone(phoneId, phone);
     }
 }

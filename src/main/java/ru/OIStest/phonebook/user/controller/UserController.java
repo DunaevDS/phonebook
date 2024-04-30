@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,8 +31,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/OIStest/users")
 public class UserController {
-    private static final String USER_ID = "X-Sharer-User-Id";
-
     private final UserService userService;
 
     @PostMapping
@@ -68,11 +65,11 @@ public class UserController {
         return userService.getUsersBySearchQuery(text, from, size);
     }
 
-    @PatchMapping
+    @PatchMapping(value = "/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserToDto updateUser(@RequestHeader(USER_ID) Long userId,
+    public UserToDto updateUser(@NotNull @PathVariable Long userId,
                                 @Valid @RequestBody UserDto user) {
-        log.info("Получен запрос PATCH /OIStest/users на обновление данных пользователя {}", user.toString());
+        log.info("Получен запрос PATCH /OIStest/users/{userId} на обновление данных пользователя {}", user.toString());
         return userService.updateUser(userId, user);
     }
 }

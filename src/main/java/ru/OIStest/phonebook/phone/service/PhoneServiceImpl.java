@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.OIStest.phonebook.exception.DataDuplicateException;
@@ -69,8 +70,8 @@ public class PhoneServiceImpl implements PhoneService {
     public List<PhoneToDto> findPhones(List<Long> ids, Integer from, Integer size) {
         List<Phone> phones;
 
-        //Пагинация
-        Pageable pageRequest = PageRequest.of(from / size, size);
+        //Пагинация c сортировкой по id на выходе
+        Pageable pageRequest = PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"));
         if (ids == null || ids.isEmpty()) {
             phones = phoneRepository.findAll(pageRequest).getContent();
         } else {
@@ -86,8 +87,8 @@ public class PhoneServiceImpl implements PhoneService {
     public List<PhoneToDto> findPhonesByUserIds(List<Long> userIds, Integer from, Integer size) {
         List<Phone> phones;
 
-        //Пагинация
-        Pageable pageRequest = PageRequest.of(from / size, size);
+        //Пагинация c сортировкой по id на выходе
+        Pageable pageRequest = PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"));
         if (userIds == null || userIds.isEmpty()) {
             phones = phoneRepository.findAll(pageRequest).getContent();
         } else {
