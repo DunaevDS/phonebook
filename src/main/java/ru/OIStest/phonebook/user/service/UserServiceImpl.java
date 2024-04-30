@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.OIStest.phonebook.exception.UserNotFoundException;
 import ru.OIStest.phonebook.exception.NotFoundException;
-import ru.OIStest.phonebook.phone.reposiory.PhoneRepository;
 import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.mapper.UserMapper;

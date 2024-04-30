@@ -17,7 +17,6 @@ import ru.OIStest.phonebook.phone.dto.PhoneToDto;
 import ru.OIStest.phonebook.phone.mapper.PhoneMapper;
 import ru.OIStest.phonebook.phone.model.Phone;
 import ru.OIStest.phonebook.phone.reposiory.PhoneRepository;
-import ru.OIStest.phonebook.user.reposiory.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
