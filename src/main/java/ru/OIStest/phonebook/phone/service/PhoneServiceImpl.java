@@ -32,8 +32,6 @@ import static java.util.stream.Collectors.toList;
 public class PhoneServiceImpl implements PhoneService {
 
     private final PhoneRepository phoneRepository;
-    private final UserRepository userRepository;
-
 
     //добавление телефона
     @Override

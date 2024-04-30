@@ -29,7 +29,6 @@ import static java.util.stream.Collectors.toList;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PhoneRepository phoneRepository;
 
     //добавление пользователя
     @Override
