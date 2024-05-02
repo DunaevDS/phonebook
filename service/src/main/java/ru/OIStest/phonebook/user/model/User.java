@@ -24,6 +24,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // В дальнейшем в планах ФИО разбить на отедльные поля с фамилией, именем и отчеством.
+    // Это позволит сохранять в БД по единому стандарту. Сейчас же можно писать как хочешь.
     @Column(nullable = false)
     private String name;
 
