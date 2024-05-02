@@ -3,7 +3,6 @@ package ru.OIStest.phonebook.phone.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-
 @RequiredArgsConstructor
 @Getter
 public enum Region {

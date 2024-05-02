@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.OIStest.phonebook.user.model.User;
 import ru.OIStest.phonebook.exception.UserNotFoundException;
 import ru.OIStest.phonebook.exception.NotFoundException;
 import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
 import ru.OIStest.phonebook.user.mapper.UserMapper;
-import ru.OIStest.phonebook.user.model.User;
 import ru.OIStest.phonebook.user.reposiory.UserRepository;
 
 import java.util.ArrayList;

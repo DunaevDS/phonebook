@@ -1,27 +1,15 @@
 version: '3.8'
 services:
-  gateway:
-    build: gateway
-    image: phonebook_gateway_image
-    container_name: gateway
+  phonebook-service:
+    build: ./service
+    image: phonebook_service_image
+    container_name: phonebook-service
     ports:
       - "8080:8080"
     depends_on:
-      - server
-    environment:
-      - PHONEBOOK_SERVER_URL=http://server:9090
-
-  server:
-    build: server
-    image: phonebook_server_image
-    container_name: server
-    ports:
-      - "9090:9090"
-    depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/phonebook
-
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/phonebook
 
   db:
     image: postgres

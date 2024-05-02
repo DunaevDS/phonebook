@@ -1,7 +1,7 @@
 package ru.OIStest.phonebook.user.service;
 
-import ru.OIStest.phonebook.user.dto.UserDto;
 import ru.OIStest.phonebook.user.dto.UserToDto;
+import ru.OIStest.phonebook.user.dto.UserDto;
 
 import java.util.List;
 
