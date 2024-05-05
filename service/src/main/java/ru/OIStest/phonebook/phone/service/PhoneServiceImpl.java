@@ -49,7 +49,9 @@ public class PhoneServiceImpl implements PhoneService {
         //сохраняем в бд только уникальные номера
         log.info("Добавление нового телефона");
         try {
-            phoneRepository.save(phone);
+            Phone savedPhone = phoneRepository.save(phone);
+            log.info("сохранили в базу телефон {}", savedPhone);
+            return PhoneMapper.INSTANCE.toDto(savedPhone);
         } catch (Exception e) {
             if (e.getMessage().contains("повторяющееся значение ключа")) {
                 throw new DataDuplicateException("такой номер телефона уже имеется в бд");
@@ -57,9 +59,6 @@ public class PhoneServiceImpl implements PhoneService {
                 throw e;
             }
         }
-
-        log.info("сохранили в базу телефон {}", phone);
-        return PhoneMapper.INSTANCE.toDto(phone);
     }
 
     //поиск списка телефонов по заданным id
@@ -119,7 +118,7 @@ public class PhoneServiceImpl implements PhoneService {
         }
         //достаем телефон по id
         Phone phone = phoneRepository.findById(phoneId).orElseThrow(() -> new PhoneNotFoundException(
-                "NotFoundException: Телефон с id= " + phoneId + " не найден."));
+                "NotFoundException: Телефон с id = " + phoneId + " не найден."));
 
         //проверяем входящие данные на 0 и заменяем текущие
         if (phoneDto.getNumber() != null) {
@@ -135,7 +134,9 @@ public class PhoneServiceImpl implements PhoneService {
 
         //сохраняем в бд только уникальные номера
         try {
-            phoneRepository.save(phone);
+            Phone updatedPhone = phoneRepository.save(phone);
+            log.info("сохранили в базу телефон {}", updatedPhone);
+            return PhoneMapper.INSTANCE.toDto(updatedPhone);
         } catch (Exception e) {
             if (e.getMessage().contains("повторяющееся значение ключа")) {
                 throw new DataDuplicateException("такой номер телефона уже имеется в бд");
@@ -143,8 +144,6 @@ public class PhoneServiceImpl implements PhoneService {
                 throw e;
             }
         }
-
-        return PhoneMapper.INSTANCE.toDto(phone);
     }
 
     //поиск пользователей по ФИО и заметкам

@@ -84,8 +84,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "NotFoundException: Пользователь с id= " + userId + " не найден."));
 
+        //обновляем только имя, заметки не трогаем
         if (userDto.getName() != null) {
             user.setName(userDto.getName());
+        }
+
+        if (userDto.getNotes() != null) {
+            user.setNotes(userDto.getNotes());
         }
 
         userRepository.save(user);
