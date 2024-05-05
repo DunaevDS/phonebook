@@ -18,7 +18,6 @@ import static org.mockito.Mockito.*;
 class UserControllerTest {
     @Mock
     UserService userService;
-    private final User mockUser = new User(1L,"User", "юзвер");
     private final UserDto mockUserDto = new UserDto(1L, "User","юзвер");
     private final UserToDto mockUserToDto = new UserToDto(1L, "User","юзвер");
     private final int from = 0;
